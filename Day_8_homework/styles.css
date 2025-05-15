@@ -1,0 +1,133 @@
+div{
+    display: inline-flex;
+    border: 1px solid black;
+}
+
+#top-nav-bar .W3-bar{
+    display: inline-flex;
+}
+
+#top-nav-bar {
+    background-color: rgba(0, 0, 0, 0.29);
+    padding: 0px;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+  
+#page-top {
+    padding: 10px;
+}
+  
+#page-top img {
+    width: 150px; 
+}
+
+.W3-bar-item {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: #444;
+  padding: 10px 0;
+  border-radius: 5px;
+} 
+
+nav .bar-item {
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+} 
+ 
+nav .bar-item:hover {
+    background-color: green; 
+}
+
+#search-container {
+    display: flex;
+    padding: 10px;
+}
+  
+#search-inner-container {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+}
+  
+.right-section {
+    display: flex;
+    justify-content: flex-end; 
+    padding: 10px;
+}
+  
+.right-section #getCertificate,
+.right-section #register {
+    margin-right: 15px;
+    border-radius: 5px; 
+}
+  
+.right-section .sign-up, .right-section .Login {
+    background-color: #28a745;
+    padding: 10px;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+}
+  
+.right-section .sign-up:hover, .right-section .login:hover {
+    background-color: #218838; 
+}
+section .html{
+  border-radius: 5px;
+}
+section {
+  display: inline-block;
+  background-color: #c9c0c0;
+}
+section .css{
+  border-radius: 5px;
+}
+section .javascript{
+  border-radius: 5px;
+}
+section .sql{
+  border-radius: 5px;
+}
+section .python{
+  border-radius: 5px;
+}
+section .java{
+  border-radius: 5px;
+}
+section .php{
+  border-radius: 5px;
+}
+section .how-to{
+  border-radius: 5px;
+}
+section .w3-css{
+  border-radius: 5px;
+}
+section .c{
+  border-radius: 5px;
+}
+section .bootstrap{
+  border-radius: 5px;
+}
+section .react{
+  border-radius: 5px;
+}
+section .mysql{
+  border-radius: 5px;
+}
+section .jquery{
+  border-radius: 5px;
+}
+section .excel{
+  border-radius: 5px;
+}
+section .xml{
+  border-radius: 5px;
+}

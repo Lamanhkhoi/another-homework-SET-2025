@@ -1,0 +1,20 @@
+@startuml
+start
+:chooseChess;
+:checkAvailability;
+:displayPossibilitySteps;
+:pickupChooseChess;
+:moveSelectedChess to selectedSlot;
+
+if (isCheck) then (yes)
+    if (isCheckMate) then (yes)
+        :go to stop game;
+        end
+    else (no)
+        :switch turn;
+    endif
+else (no)
+    :switch turn;
+endif
+end
+@enduml

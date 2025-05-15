@@ -1,0 +1,38 @@
+.title{
+    font-size: 4vh;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    color:red;
+}
+
+.container1{
+    background-image: url(./hinh/co-vietnam.png);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.container1 img{
+    float: left;
+    object-fit: cover;
+    height: 370px;
+    margin-right: 50px;
+}
+
+.container2{
+    background-image: url(./hinh/co-vietnam.png);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.container2 img{
+    float: right;
+    object-fit: cover;
+    height: 220px;
+
+}
+
+footer{
+    display: flex;
+    justify-content: end;
+}

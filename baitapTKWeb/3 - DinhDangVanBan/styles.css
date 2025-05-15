@@ -1,0 +1,44 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    top: 100px;
+}
+
+header{
+    color: rgb(31, 231, 31);
+    font-size: 40px;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.container1{
+    width: 700px;
+    margin-bottom: -10px;
+}
+
+.title{
+    border-bottom:3px solid black ;
+    font-weight: bold;
+}
+
+.element{
+    font-style: italic
+
+}
+
+.content{
+    color: red;
+}
+
+.container2{
+    width: 700px;
+}
+
+pre{
+    font-size: 15px;
+    background-color: rgb(128, 128, 128, 0.3);
+    color: blue;
+    padding: 20px;
+}

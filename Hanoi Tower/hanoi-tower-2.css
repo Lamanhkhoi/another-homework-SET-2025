@@ -1,0 +1,89 @@
+#root {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+
+}
+
+.red {
+  background-color: red;
+  width: 250px;
+  height: 250px;
+  z-index: 3;
+  position: relative;
+  left: 650px;
+  top: 300px;
+}
+
+.black {
+  background-color: black;
+  width: 50px;
+  height: 50px;
+  z-index: 7;
+  position: relative;
+  left: 750px;
+  top: 150px;
+}
+
+.grey {
+  background-color: grey;
+  width: 400px;
+  height: 400px;
+  z-index: 0;
+  position: relative;
+  left: 575px;
+  top: -80px;
+}
+
+.green {
+  background-color: green;
+  width: 200px;
+  height: 200px;
+  z-index: 4;
+  position: relative;
+  left: 53px;
+  top: 325px;
+
+}
+
+.purple {
+  background-color: purple;
+  width: 300px;
+  height: 300px;
+  z-index: 2;
+  position: relative;
+  left: 3px;
+  top: 75px;
+}
+
+.blue {
+  background-color: blue;
+  width: 150px;
+  height: 150px;
+  z-index: 5;
+  position: relative;
+  left: 77px;
+  top: -150px;
+}
+
+.yellow {
+  background-color: yellow;
+  width: 100px;
+  height: 100px;
+  z-index: 6;
+  position: relative;
+  right: 420px;
+  top: 375px;
+}
+
+.darkblue {
+  background-color: darkblue;
+  width: 350px;
+  height: 350px;
+  z-index: 1;
+  position: relative;
+  right: 545px;
+  top: 150px;
+}
+
+

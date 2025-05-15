@@ -1,0 +1,64 @@
+@startuml
+left to right direction
+package Audience {
+    actor Spectator as spectator
+}
+
+actor Player as player
+
+package chessGame {
+    usecase "Move" as move
+    usecase "Undo" as undo
+    usecase "Pause" as pause
+    usecase "Save" as save
+    usecase "Login" as login
+    usecase "Logout" as logout
+    usecase "Start" as start
+    usecase "Spectate" as spectate
+    usecase "Resign" as resign
+}
+
+chessGame -right-> player
+chessGame -[hidden]right-> Audience
+
+player -[hidden]right-> chessGame
+
+player <-[hidden]right- move
+player .[hidden]right.> undo
+player -[hidden]right-> save
+player -[hidden]right-> pause
+player -[hidden]right-> login
+player -[hidden]right-> start
+player -[hidden]right-> logout
+player -[hidden]right-> resign
+
+spectator -[hidden]right-> spectate
+
+rectangle chessGame{
+    (logout) <. (login) : include
+    (login) .> (start) : incude
+
+}
+
+@enduml
+
+@startuml
+left to right direction
+:user: -left-> (dummyLeft)
+:user: -right-> (dummyRight)
+:user: -up-> (dummyUp)
+:user: -down-> (dummyDown)
+@enduml
+
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor customer
+actor clerk
+rectangle checkout {
+
+  (checkout) .> (payment) : include
+  (help) .> (checkout) : extends
+  (checkout) -- clerk
+}
+@enduml
