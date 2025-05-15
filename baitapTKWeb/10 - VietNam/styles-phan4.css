@@ -1,0 +1,40 @@
+body{
+    background-image: url(./hinh/co-vietnam.png);
+    background-repeat:no-repeat;
+    background-position: center 70px;
+    width: auto;
+}
+
+.title{
+    background-color: rgb(221, 2, 221);
+    color: white;
+    font-size: 200%;
+    padding: 10px 0px 8px 8px;
+    margin-bottom: 10px;
+}
+
+.container{
+    columns: 3 5vh;
+    column-gap: 13px;
+    column-rule: 1px dashed lightblue;
+    flex-wrap: wrap;
+}
+
+.container .word{
+    float: left;
+    margin-top: 15px;
+}
+
+.container .picture{
+    break-inside: avoid;
+    display: block;
+    margin: 0 auto;
+    border: 1px solid black;
+    width: 450px; 
+    height: 250px;
+}
+
+footer{
+    display: flex;
+    justify-content: end;
+}

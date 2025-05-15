@@ -1,0 +1,47 @@
+#leftContainer{
+    display: flex;
+    border: 2px solid black;
+    flex-direction: column;
+    width: 500px;
+    margin-top: 50px;
+
+}
+
+.facebookTitle{
+    display: flex;
+    border: 1px solid black;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 35px;
+    color: #1877f2;
+    letter-spacing: -1px;
+
+}
+
+.recentLoginsTitle{
+    display: flex;
+    border: 1px solid black;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+
+}
+
+.suggest{
+    display: flex;
+    border: 1px solid black;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    color: rgb(93, 92, 92);
+
+}
+
+#addAccountContainer{
+    display: flex;
+    border: 1px solid red;
+    flex-direction: row;
+    padding: 50px;
+    padding-left: 0px;
+
+}

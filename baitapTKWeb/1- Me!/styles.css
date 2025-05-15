@@ -1,0 +1,43 @@
+header {
+    text-align: center;
+    background-color: #fad4fa;
+    font-size:xx-large;
+    font-weight: bold;
+    color: #bf3b92;
+    padding: 15px;
+}
+
+.main{
+    background-color: #f9facc;
+    margin-top: 20px;
+}
+
+#main__content1{
+    text-align: center;
+    color: blue;
+    font-style: italic;
+    padding: 10px;
+
+}
+
+#main__content2{
+    text-align: center;
+    color: #bf3b92;
+    font-style: italic;
+    padding: 10px;
+
+}
+
+#main__content3{
+    text-align: center;
+    color: green;
+    font-style: italic;
+    padding: 10px;
+ 
+}
+
+hr{
+    border: 1px solid black;
+    width: 300px;
+    opacity: 0.3;
+}
