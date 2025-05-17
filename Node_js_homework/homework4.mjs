@@ -1,21 +1,47 @@
-
 import http from 'node:http';
-import url from 'node:url'; 
+import url from 'node:url';
 
-const port = 3000; 
+const port = 3000;
 
 const apiCallHistory = [];
 
-function logApiCall(endpoint, input, output) {
+function logApiCall(endpoint, input, output, statusCode) {
+  const now = new Date();
+  
+  const timeZone = 'Asia/Ho_Chi_Minh';
+
+  // Formatter for day (YYYY-MM-DD)
+  const dateFormatter = new Intl.DateTimeFormat('en-CA', { 
+    timeZone: timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+
+  // Formatter for hour (HH:mm:ss)
+  const timeFormatter = new Intl.DateTimeFormat('en-GB', { 
+    timeZone: timeZone,
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false 
+  });
+
+  //Format date and hours
+  const datePart = dateFormatter.format(now); 
+  const timePart = timeFormatter.format(now); 
+  const formattedTimestamp = `${datePart}T ${timePart}+07:00`;
   const callDetails = {
     endpoint,
     input,
     output,
-    timestamp: new Date().toISOString().split('.')[0] + 'Z' 
+    statusCode,
+    timestamp: formattedTimestamp 
   };
+
   apiCallHistory.push(callDetails);
   if (apiCallHistory.length > 50) {
-    apiCallHistory.shift(); 
+    apiCallHistory.shift();
   }
 }
 
@@ -24,100 +50,122 @@ const server = http.createServer(async (req, res) => {
   const pathName = parsedUrl.pathname;
   const method = req.method;
 
+  // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (method === 'OPTIONS') {
-    res.writeHead(204); // No Content
+    res.writeHead(204);
     res.end();
     return;
   }
 
-  let requestInput = {}; 
+  let requestInput = {};
+  let rawRequestBody = ''; 
 
   if (method === 'POST') {
     try {
-      requestInput = await new Promise((resolve, reject) => {
+      rawRequestBody = await new Promise((resolve, reject) => {
         let bodyChunks = [];
         req.on('data', chunk => {
           bodyChunks.push(chunk);
         });
         req.on('end', () => {
-          try {
-            const body = Buffer.concat(bodyChunks).toString();
-            if (body) {
-              resolve(JSON.parse(body));
-            } else {
-              resolve({}); 
-            }
-          } catch (e) {
-            const errorOutput = { error: 'Invalid JSON body' };
-            logApiCall(pathName, body, errorOutput); // Ghi lại input thô nếu parse lỗi
-            res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
-            res.end(JSON.stringify(errorOutput));
-            reject(new Error('Handled Invalid JSON')); // Đánh dấu là đã xử lý để không chạy code phía dưới
-          }
+          const body = Buffer.concat(bodyChunks).toString();
+          resolve(body); // Resolve với body thô
         });
         req.on('error', err => {
-          reject(err); 
+          reject(err);
         });
       });
-    } catch (error) {
-      if (error.message !== 'Handled Invalid JSON') {
-        console.error('Error reading POST body:', error);
-        const errorOutput = { error: 'Error processing request body' };
-        res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
-        res.end(JSON.stringify(errorOutput));
+
+      if (rawRequestBody) {
+        requestInput = JSON.parse(rawRequestBody); // Parse JSON
+      } else {
+        requestInput = {};
       }
+
+    } catch (e) { // check bugs JSON.parse
+      const errorOutput = { error: 'Invalid JSON body' };
+      logApiCall(pathName, { rawBody: rawRequestBody }, errorOutput, 400);
+      res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify(errorOutput));
       return;
     }
   } else if (method === 'GET') {
-    requestInput = parsedUrl.query; 
+    requestInput = parsedUrl.query;
   }
 
-
-  // --- Định tuyến và xử lý API ---
-
-  if (pathName === '/sum' && method === 'POST') {
-    const { num1, num2 } = requestInput;
+  // --- Routing ---
+  if (pathName === '/sum' && method === 'POST') { 
     let output;
     let statusCode = 200;
+
+    const { num1, num2 } = requestInput;
 
     if (typeof num1 === 'number' && typeof num2 === 'number') {
       output = { sum: num1 + num2 };
     } else {
       statusCode = 400;
-      output = { error: 'Invalid input. Expecting num1 and num2 to be numbers.' };
+      output = { error: 'Invalid input. Expecting num1 and num2 to be numbers in JSON body.' };
     }
-    logApiCall(pathName, requestInput, output);
+
+    logApiCall(pathName, requestInput, output, statusCode);
     res.writeHead(statusCode, { 'Content-Type': 'application/json; charset=utf-8' });
     res.end(JSON.stringify(output));
 
   } else if (pathName === '/current-time' && method === 'GET') {
-    const inputForLog = {}; 
-    const now = new Date();
-    const utcTimeString = now.toISOString().split('.')[0] + 'Z';
-    const output = { currentTime: utcTimeString };
+    let output;
+    let statusCode = 200;
+    const now = new Date(); 
+    const timeZone = 'Asia/Ho_Chi_Minh';
+    const dateFormatter = new Intl.DateTimeFormat('en-CA', { // YYYY-MM-DD
+        timeZone: timeZone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    });
 
-    logApiCall(pathName, inputForLog, output);
-    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    const timeFormatter = new Intl.DateTimeFormat('en-GB', { // HH:mm:ss
+        timeZone: timeZone,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    });
+
+    try {
+        const datePart = dateFormatter.format(now);
+        const timePart = timeFormatter.format(now);
+        output = { currentTime: `${datePart}T ${timePart}+07:00` };
+    } catch (e) {
+        console.error("Error formatting date:", e);
+        statusCode = 500;
+        output = { error: "Error formatting server time" };
+    }
+
+    logApiCall(pathName, requestInput, output, statusCode);
+    res.writeHead(statusCode, { 'Content-Type': 'application/json; charset=utf-8' });
     res.end(JSON.stringify(output));
 
   } else if (pathName === '/history' && method === 'GET') {
+    const outputForClient = { history: apiCallHistory };
+    logApiCall(pathName, requestInput, { message: "Successfully retrieved history" }, 200);
     res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-    res.end(JSON.stringify({ history: apiCallHistory }));
+    res.end(JSON.stringify(outputForClient));
 
   } else {
-    const output = { error: '404 Not Found - Endpoint không tồn tại' };
+    const output = { error: '404 Not Found - Endpoint or Method not supported' };
+    logApiCall(pathName, requestInput, output, 404);
     res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8' });
     res.end(JSON.stringify(output));
   }
 });
 
 server.listen(port, () => {
-  console.log(`Server Node.js thuần đang chạy tại http://localhost:${port}`);
-  console.log('API tính tổng (POST): POST http://localhost:3000/sum (body: {"num1": X, "num2": Y})');
-  console.log('API thời gian UTC (GET): GET http://localhost:3000/current-time');
-  console.log('API lịch sử (GET): GET http://localhost:3000/history');
+  console.log(`Server Node.js is running at http://localhost:${port}`);
+  console.log('API Sum (POST): POST http://localhost:3000/sum (body: {"num1": X, "num2": Y})');
+  console.log('API Time (GET): GET http://localhost:3000/current-time');
+  console.log('API History (GET): GET http://localhost:3000/history');
 });
