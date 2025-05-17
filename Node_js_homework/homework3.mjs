@@ -21,7 +21,6 @@ const server = http.createServer((req, res) => {
 if (pathName === '/current-time' && method === 'GET') {
     const now = new Date();
     const timeZone = 'Asia/Ho_Chi_Minh';
-
     const dateFormatter = new Intl.DateTimeFormat('en-CA', { 
         timeZone: timeZone,
         year: 'numeric',
