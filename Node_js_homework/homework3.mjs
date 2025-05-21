@@ -52,6 +52,6 @@ if (pathName === '/current-time' && method === 'GET') {
 });
 
 server.listen(port, () => {
-  console.log(`Server Node.js thuần đang chạy tại http://localhost:${port}`);
-  console.log(`Để lấy thời gian UTC hiện tại: GET http://localhost:${port}/current-time`);
+  console.log(`Server Node.js are running http://localhost:${port}`);
+  console.log(`Time: GET http://localhost:${port}/current-time`);
 });
