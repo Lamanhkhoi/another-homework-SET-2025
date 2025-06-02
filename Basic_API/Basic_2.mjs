@@ -45,7 +45,7 @@ const requestHandler = (requestFromClient, responseToClient) => {
             responseToClient.writeHead(200); // 200 OK
             responseToClient.end(JSON.stringify({
                 sum: sumResult,
-                num1_received: num1,
+                num1_received: num1, 
                 num2_received: num2
             }));
         }
