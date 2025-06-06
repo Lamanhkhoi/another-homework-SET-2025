@@ -1,57 +1,50 @@
+import http from 'http';
+import url from 'url';
 
-import http from 'node:http';
-import url from 'node:url'; 
+const requestHandler = (request, response) => {
+    const parsedUrl = url.parse(request.url, true);
+    const pathname = parsedUrl.pathname;
+    const method = request.method;
 
-const port = 3002;
-
-const server = http.createServer((req, res) => {
-  const parsedUrl = url.parse(req.url, true);
-  const pathName = parsedUrl.pathname;
-  const method = req.method;
-
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  if (method === 'OPTIONS') {
-    res.writeHead(204); 
-    res.end();
-    return;
-  }
-if (pathName === '/current-time' && method === 'GET') {
-    const now = new Date();
-    const timeZone = 'Asia/Ho_Chi_Minh';
-    const dateFormatter = new Intl.DateTimeFormat('en-CA', { 
-        timeZone: timeZone,
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-    });
-
-    const timeFormatter = new Intl.DateTimeFormat('en-GB', { 
-        timeZone: timeZone,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-    });
-
-    const datePart = dateFormatter.format(now); 
-    const timePart = timeFormatter.format(now); 
-
-    const vietnamTimeString = `${datePart}T${timePart} +07:00`;
+    console.log(`Nhận yêu cầu: ${method} ${pathname}`);
     
-    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-    console.log("Vietnam Time (Intl.DateTimeFormat):", vietnamTimeString);
-    res.end(JSON.stringify(vietnamTimeString));
+    response.setHeader('Content-Type', 'application/json; charset=utf-8');
 
-  } else {
-    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-    res.end('404 Not Found - Endpoint');
-  }
-});
+    if (pathname === '/current-time-vietnam' && method === 'GET'){
+        const now = new Date();
+        const option = {
+            timeZone: 'Asia/Ho_Chi_Minh',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false //sử dụng định dạng 24 giờ
+        }
+        
+        const dateTimeParts = now.toLocaleString('sv-SE', option); /*now.toLocaleString(locales, options): Phương thức này của đối tượng Date trả về một chuỗi biểu diễn ngày giờ 
+        dựa trên locales (khu vực địa lý, ngôn ngữ) và options (các tùy chọn định dạng) bạn cung cấp.*/
 
-server.listen(port, () => {
-  console.log(`Server Node.js thuần đang chạy tại http://localhost:${port}`);
-  console.log(`Để lấy thời gian UTC hiện tại: GET http://localhost:${port}/current-time`);
+        const formattedVietnamTime = dateTimeParts.replace(' ', '/') + "+07:00";
+
+        response.writeHead(200);
+        response.end(JSON.stringify({
+            currentTime: formattedVietnamTime
+        }));
+
+    } else {
+        response.writeHead(404);
+        response.end(JSON.stringify({
+            error: "Endpoint không tìm thấy."
+        }));
+    }
+};
+
+const server = http.createServer(requestHandler);
+const PORT = 3000;
+
+server.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}`);
+    console.log(`Test GET request to: /current-time-vietnam`);
 });
