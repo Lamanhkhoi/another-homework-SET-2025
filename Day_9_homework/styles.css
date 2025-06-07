@@ -4,7 +4,7 @@ body {
     border-radius: 10px;
 }
 
-.personal {
+.personalCv__contactSection {
     display: inline-block;
     flex-direction: column;
     width: 300px;
@@ -14,7 +14,7 @@ body {
     background-color: rgb(16, 93, 182);
 }
 
-#personal__avatar {
+#personalCvSection {
     border: 2px solid black;
     margin: 10px;
     margin-top: 10px;
@@ -26,24 +26,24 @@ body {
     overflow: hidden;
 }
 
-#personal__avatar img {
+#personalCvSection img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.contactTitle {
+.personalCv__contactDetails {
     display: block;
     border-bottom: 3px solid rgb(255, 255, 255);
     margin: 10px;
-    color: white;
+    color: black;
     font-size: 25px;
 }
 
-.contactPersonal__information {
+.personalCv__educationProfile {
     display: block;
     margin: 10px;
-    color: white;
+    color: black;
 }
 
 .personal__education {
@@ -59,7 +59,7 @@ body {
     flex-direction: column;
 }
 
-#skillTitle {
+.personalCv__skillItemTitle {
     display: block;
     border-bottom: 3px solid rgb(255, 255, 255);
     margin: 10px;
@@ -67,7 +67,7 @@ body {
     font-size: 25px;
 }
 
-#skillITContent {
+#itSkillContent {
     display: flex;
     margin: 10px;
     max-width: 200px;
@@ -76,7 +76,7 @@ body {
     color: white;
 }
 
-#skillEnglishContent {
+#englishSkillContent {
     display: flex;
     margin: 10px;
     max-width: 200px;
@@ -85,7 +85,7 @@ body {
     color: white;
 }
 
-.right-main {
+.mainContentCv {
     display: inline-block;
     flex-direction: column;
     width: 100%;
@@ -94,52 +94,52 @@ body {
     border-radius: 0px;
 }
 
-.name-and-jobs {
+.mainContentCv__nameAndJobs {
     display: block;
     border: 0px solid black;
     padding-top: 45px;
     padding-left: 10px;
 }
 
-.name-and-jobsFullname {
+.mainContentCv__nameAndJobsFullName {
     display: block;
     border: 0px solid black;
     font-size: 50px;
 }
 
-.name-and-jobsWhere {
+.mainContentCv__nameAndJobsStatus {
     display: block;
     border: 0px solid black;
     font-size: 35px;
 }
 
-.career-goals {
+.mainContentCv__careerGoals {
     display: block;
     border: 0px solid black;
     padding-left: 0px;
     margin-top: 30px;
 }
 
-.career-goals__title {
+.mainContentCv__careerGoalsTitle {
     display: block;
     border-bottom: 3px solid black;
     margin: 10px;
     font-size: 25px;
 }
 
-#career-goalsContent {
+#careerGoalsContent {
     display: block;
     padding: 10px;
     font-size: 18px;
 }
 
-.experience {
+.mainContentCv__experience {
     display: block;
     border: 0px solid black;
     padding-left: 0px;
 }
 
-.experience__title {
+.mainContentCv__experienceTitle {
     display: block;
     border-bottom: 3px solid black;
     margin: 10px;
@@ -152,14 +152,14 @@ body {
     font-size: 18px;
 }
 
-.other-skill {
+.mainContentCv__otherSkills {
     display: block;
     border: 0px solid black;
     padding: 0px;
     
 }
 
-.other-skill__title {
+.mainContentCv__otherSkillsTitle {
     display: block;
     border-bottom: 3px solid black;
     margin: 10px;
@@ -167,7 +167,7 @@ body {
     background-color: rgb(255, 255, 255);
 }
 
-#other-skillContent {
+#otherSkillsContent {
     display: block;
     padding: 10px;
     font-size: 18px;
