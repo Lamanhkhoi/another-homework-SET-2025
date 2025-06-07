@@ -32,7 +32,6 @@ const requestHandler = (requestFromClient, responseToClient) => {
         const num2 = parseFloat(num2str);
         console.log(`Sau khi parseFloat: num1 = ${num1} (kiểu: ${typeof num1}), num2 = ${num2} (kiểu: ${typeof num2})`);
 
-        // Bây giờ mới kiểm tra isNaN TRƯỚC KHI gửi bất kỳ phản hồi nào cho endpoint /sum
         if (isNaN(num1) || isNaN(num2)) {
             // Input không hợp lệ
             responseToClient.writeHead(400); // 400 Bad Request
@@ -40,7 +39,6 @@ const requestHandler = (requestFromClient, responseToClient) => {
                 error: "Dữ liệu đầu vào không hợp lệ. 'num1' và 'num2' phải là các số hợp lệ."
             }));
         } else {
-            // Input hợp lệ, tính tổng và gửi kết quả
             const sumResult = num1 + num2;
             responseToClient.writeHead(200); // 200 OK
             responseToClient.end(JSON.stringify({
@@ -50,7 +48,6 @@ const requestHandler = (requestFromClient, responseToClient) => {
             }));
         }
     } else {
-        // Sử dụng 'responseToClient' để gửi lỗi 404
         responseToClient.writeHead(404);
         responseToClient.end(JSON.stringify({
             error: "Endpoint không tìm thấy. Hãy thử /sum?num1=X&num2=Y"
@@ -59,9 +56,9 @@ const requestHandler = (requestFromClient, responseToClient) => {
 };
 
 const server = http.createServer(requestHandler);
-const PORT = 3000; // Viết hoa hằng số
+const PORT = 3000;
 
 server.listen(PORT, () => {
-    console.log(`Server đang chạy tại http://localhost:${PORT}`); // Sửa lỗi đánh máy
+    console.log(`Server đang chạy tại http://localhost:${PORT}`);
     console.log('  API tính tổng: /sum?num1=X&num2=Y');
 });

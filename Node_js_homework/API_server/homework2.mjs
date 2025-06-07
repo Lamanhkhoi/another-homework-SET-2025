@@ -1,14 +1,3 @@
-/*
-#### **API to Count How Many Times the Sum API Has Been Called**
-
-- **Requirements**:
-  - Create an API that returns the number of times the sum calculation API has been called.
-- **Input**:
-  - None.
-- **Output**:
-  - Returns the number of times the sum calculation API has been called:{ "totalCalls": count }.
-*/ 
-
 import http from 'http';
 import url from 'url';
 
@@ -53,16 +42,14 @@ const requestHandler = (requestFromClient, responseToClient) => {
             }));
             sumAPICallCount++;
         }
-        // Không còn response.end() ở giữa logic nữa
     } else if (pathname === '/sum/call-count'){
-        if ( requestFromClient.method === 'GET'){//Chúng ta kiểm tra xem phương thức của yêu cầu có phải là GET không. API này chỉ nhằm mục đích lấy thông tin, nên việc giới hạn nó chỉ cho phép GET là hợp lý.
+        if ( requestFromClient.method === 'GET'){
             responseToClient.writeHead(200);
             responseToClient.end(JSON.stringify({
                 totalCalls: sumAPICallCount
             }));
         }
     } else {
-        // Sử dụng 'responseToClient' để gửi lỗi 404
         responseToClient.writeHead(404);
         responseToClient.end(JSON.stringify({
             error: "Endpoint không tìm thấy. Hãy thử /sum?num1=X&num2=Y"
@@ -71,10 +58,10 @@ const requestHandler = (requestFromClient, responseToClient) => {
 };
 
 const server = http.createServer(requestHandler);
-const PORT = 3000; // Viết hoa hằng số
+const PORT = 3000; 
 
 server.listen(PORT, () => {
-    console.log(`Server đang chạy tại http://localhost:${PORT}`); // Sửa lỗi đánh máy
+    console.log(`Server đang chạy tại http://localhost:${PORT}`);
     console.log('  API tính tổng: /sum?num1=X&num2=Y');
     console.log('  API đếm số lần gọi thành công: /sum/call-count (GET)');
 });
