@@ -1,7 +1,15 @@
 import http from 'http';
 import url from 'url';
+import fs from 'fs/promises'; 
+import path from 'path';     
 
-const requestHandler = (request, response) => {
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const timeLogFilePath = path.join(__dirname, 'time_log.txt');
+
+const requestHandler = async (request, response) => {
     const parsedUrl = url.parse(request.url, true);
     const pathname = parsedUrl.pathname;
     const method = request.method;
@@ -23,10 +31,18 @@ const requestHandler = (request, response) => {
             hour12: false //sử dụng định dạng 24 giờ
         }
         
-        const dateTimeParts = now.toLocaleString('sv-SE', option); /*now.toLocaleString(locales, options): Phương thức này của đối tượng Date trả về một chuỗi biểu diễn ngày giờ 
-        dựa trên locales (khu vực địa lý, ngôn ngữ) và options (các tùy chọn định dạng) bạn cung cấp.*/
+        const dateTimeParts = now.toLocaleString('sv-SE', option); 
 
-        const formattedVietnamTime = dateTimeParts.replace(' ', '/') + "+07:00";
+        const formattedVietnamTime = dateTimeParts.replace(' ', 'T') + "+07:00";
+
+        const logEntry = `[${new Date().toISOString()}] API /current-time-vietnam was called. Returned time: ${formattedVietnamTime}\n`;
+        
+        try {
+            await fs.appendFile(timeLogFilePath, logEntry);
+            console.log('Đã ghi log cho API thời gian.');
+        } catch (error) {
+            console.error('Lỗi khi ghi file log thời gian:', error);
+        }
 
         response.writeHead(200);
         response.end(JSON.stringify({

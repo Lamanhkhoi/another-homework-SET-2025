@@ -1,37 +1,44 @@
 import http from 'http';
 import url from 'url';
+import fs from 'fs/promises';
+import path from 'path';
 
-const requestHandler = (requestFromClient, responseToClient) => {
-    // Phân tích URL từ đối tượng 'requestFromClient'
-    const parsedUrl = url.parse(requestFromClient.url, true); // Sử dụng requestFromClient.url, chứa toàn bộ thông tin URL đã được "bóc tách" thành các phần nhỏ.
-    const pathname = parsedUrl.pathname;//giúp chúng ta xác định xem người dùng muốn truy cập "endpoint" nào của API.(vd: /sum, /history)
-    const queryParams = parsedUrl.query;//giúp chúng ta dễ dàng lấy ra các giá trị đầu vào mà người dùng gửi lên qua URL để API xử lý
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-    // Sử dụng 'responseToClient' để thiết lập header
+const historyFilePath = path.join(__dirname, 'sum_history_homework1.txt');
+
+const requestHandler = async (requestFromClient, responseToClient) => {
+    const parsedUrl = url.parse(requestFromClient.url, true);
+    const pathname = parsedUrl.pathname;
+    const queryParams = parsedUrl.query;
+
     responseToClient.setHeader('Content-Type', 'application/json; charset=utf-8');
 
     if (pathname === '/sum') {
         const num1str = queryParams.num1;
         const num2str = queryParams.num2;
-
-        console.log('Đã nhận được num1 (chuỗi):', num1str);
-        console.log('Đã nhận được num2 (chuỗi):', num2str);
-
         const num1 = parseFloat(num1str);
         const num2 = parseFloat(num2str);
-        console.log(`Sau khi parseFloat: num1 = ${num1} (kiểu: ${typeof num1}), num2 = ${num2} (kiểu: ${typeof num2})`);
 
-        // Bây giờ mới kiểm tra isNaN TRƯỚC KHI gửi bất kỳ phản hồi nào cho endpoint /sum
         if (isNaN(num1) || isNaN(num2)) {
-            // Input không hợp lệ
-            responseToClient.writeHead(400); // 400 Bad Request
+            responseToClient.writeHead(400);
             responseToClient.end(JSON.stringify({
                 error: "Dữ liệu đầu vào không hợp lệ. 'num1' và 'num2' phải là các số hợp lệ."
             }));
         } else {
-            // Input hợp lệ, tính tổng và gửi kết quả
             const sumResult = num1 + num2;
-            responseToClient.writeHead(200); // 200 OK
+            const historyLine = `Timestamp: ${new Date().toISOString()}, Calculation: ${num1} + ${num2} = ${sumResult}\n`;
+
+            try {
+                // Lệnh ghi file vẫn ở đây
+                await fs.appendFile(historyFilePath, historyLine);
+                console.log('Đã ghi lịch sử phép tính vào file.');
+            } catch (error) {
+                console.error('Lỗi khi ghi file lịch sử:', error);
+            }
+            responseToClient.writeHead(200);
             responseToClient.end(JSON.stringify({
                 sum: sumResult,
                 num1_received: num1,
@@ -39,7 +46,6 @@ const requestHandler = (requestFromClient, responseToClient) => {
             }));
         }
     } else {
-        // Sử dụng 'responseToClient' để gửi lỗi 404
         responseToClient.writeHead(404);
         responseToClient.end(JSON.stringify({
             error: "Endpoint không tìm thấy. Hãy thử /sum?num1=X&num2=Y"
@@ -48,9 +54,9 @@ const requestHandler = (requestFromClient, responseToClient) => {
 };
 
 const server = http.createServer(requestHandler);
-const PORT = 3000; // Viết hoa hằng số
+const PORT = 3000;
 
 server.listen(PORT, () => {
-    console.log(`Server đang chạy tại http://localhost:${PORT}`); // Sửa lỗi đánh máy
+    console.log(`Server đang chạy tại http://localhost:${PORT}`);
     console.log('  API tính tổng: /sum?num1=X&num2=Y');
 });

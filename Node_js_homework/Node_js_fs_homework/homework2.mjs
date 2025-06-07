@@ -1,15 +1,22 @@
 import http from 'http';
 import url from 'url';
+import fs from 'fs/promises';
+import path from 'path';
 
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const historyFilePath = path.join(__dirname, 'sum_history_homework2.txt');
+const countFilePath = path.join(__dirname, 'sum_count.txt');
 let sumAPICallCount = 0;
 
-const requestHandler = (requestFromClient, responseToClient) => {
+const requestHandler = async (requestFromClient, responseToClient) => {
     // Phân tích URL từ đối tượng 'requestFromClient'
-    const parsedUrl = url.parse(requestFromClient.url, true); // Sử dụng requestFromClient.url, chứa toàn bộ thông tin URL đã được "bóc tách" thành các phần nhỏ.
-    const pathname = parsedUrl.pathname;//giúp chúng ta xác định xem người dùng muốn truy cập "endpoint" nào của API.(vd: /sum, /history)
-    const queryParams = parsedUrl.query;//giúp chúng ta dễ dàng lấy ra các giá trị đầu vào mà người dùng gửi lên qua URL để API xử lý
+    const parsedUrl = url.parse(requestFromClient.url, true); 
+    const pathname = parsedUrl.pathname;
+    const queryParams = parsedUrl.query;
 
-    // Sử dụng 'responseToClient' để thiết lập header
     responseToClient.setHeader('Content-Type', 'application/json; charset=utf-8');
 
     if (pathname === '/sum') {
@@ -23,35 +30,42 @@ const requestHandler = (requestFromClient, responseToClient) => {
         const num2 = parseFloat(num2str);
         console.log(`Sau khi parseFloat: num1 = ${num1} (kiểu: ${typeof num1}), num2 = ${num2} (kiểu: ${typeof num2})`);
 
-        // Bây giờ mới kiểm tra isNaN TRƯỚC KHI gửi bất kỳ phản hồi nào cho endpoint /sum
+        
         if (isNaN(num1) || isNaN(num2)) {
-            // Input không hợp lệ
-            responseToClient.writeHead(400); // 400 Bad Request
+            responseToClient.writeHead(400);
             responseToClient.end(JSON.stringify({
                 error: "Dữ liệu đầu vào không hợp lệ. 'num1' và 'num2' phải là các số hợp lệ."
             }));
         } else {
-            // Input hợp lệ, tính tổng và gửi kết quả
-            console.log(`API /sum được gọi thành công. Tổng số lần gọi thành công: ${sumAPICallCount}`);
+            console.log(`API /sum được gọi thành công`);
             const sumResult = num1 + num2;
-            responseToClient.writeHead(200); // 200 OK
+            const historyLine = `Timestamp: ${new Date().toISOString()}, Calculation: ${num1} + ${num2} = ${sumResult}\n`;
+        
+            try {
+                await fs.appendFile(historyFilePath, historyLine);
+                console.log('Đã ghi lịch sử phép tính vào file.');
+                await fs.writeFile(countFilePath, sumAPICallCount.toString());
+                console.log('Đã cập nhật file đếm.');
+            } catch (error) {
+                console.error('Lỗi khi ghi file lịch sử:', error);
+            }
+            sumAPICallCount++;
+            responseToClient.writeHead(200); 
             responseToClient.end(JSON.stringify({
                 sum: sumResult,
                 num1_received: num1,
                 num2_received: num2
             }));
-            sumAPICallCount++;
+            
         }
-        // Không còn response.end() ở giữa logic nữa
     } else if (pathname === '/sum/call-count'){
-        if ( requestFromClient.method === 'GET'){//Chúng ta kiểm tra xem phương thức của yêu cầu có phải là GET không. API này chỉ nhằm mục đích lấy thông tin, nên việc giới hạn nó chỉ cho phép GET là hợp lý.
+        if ( requestFromClient.method === 'GET'){
             responseToClient.writeHead(200);
             responseToClient.end(JSON.stringify({
                 totalCalls: sumAPICallCount
             }));
         }
     } else {
-        // Sử dụng 'responseToClient' để gửi lỗi 404
         responseToClient.writeHead(404);
         responseToClient.end(JSON.stringify({
             error: "Endpoint không tìm thấy. Hãy thử /sum?num1=X&num2=Y"
@@ -60,10 +74,28 @@ const requestHandler = (requestFromClient, responseToClient) => {
 };
 
 const server = http.createServer(requestHandler);
-const PORT = 3000; // Viết hoa hằng số
+const PORT = 3000; 
 
-server.listen(PORT, () => {
-    console.log(`Server đang chạy tại http://localhost:${PORT}`); // Sửa lỗi đánh máy
-    console.log('  API tính tổng: /sum?num1=X&num2=Y');
-    console.log('  API đếm số lần gọi thành công: /sum/call-count (GET)');
-});
+const startServer = async () => {
+    try {
+        const data = await fs.readFile(countFilePath, 'utf8');
+        sumAPICallCount = parseInt(data, 10) || 0; // Thêm || 0 để phòng trường hợp file rỗng
+        console.log(`Đã nạp số lần gọi từ file: ${sumAPICallCount}`);
+    } catch (error) {
+        if (error.code === 'ENOENT') {
+            console.log('File đếm không tìm thấy. Bắt đầu đếm từ 0.');
+            sumAPICallCount = 0;
+        } else {
+            console.error('Lỗi khi đọc file đếm:', error);
+            process.exit(1);
+        }
+    }
+
+    server.listen(PORT, () => {
+        console.log(`Server đang chạy tại http://localhost:${PORT}`);
+        console.log('  API tính tổng: /sum?num1=X&num2=Y');
+        console.log('  API đếm số lần gọi thành công: /sum/call-count (GET)');
+    });
+};
+
+startServer();// "bắt đầu ngày làm việc mới"

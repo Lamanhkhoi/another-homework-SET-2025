@@ -1,8 +1,28 @@
 import http from 'http';
 import url from 'url';
 
+import fs from 'fs/promises';
+import path from 'path';
+
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const historyFilePath = path.join(__dirname, 'api_history.json');
+
+
 let sumAPICallCount = 0;
 let apiCallHistory = [];
+
+async function saveHistory() {
+    try {
+        // Ghi toàn bộ mảng apiCallHistory vào file, format JSON cho đẹp
+        await fs.writeFile(historyFilePath, JSON.stringify(apiCallHistory, null, 2));
+        console.log('Lịch sử API đã được lưu vào file.');
+    } catch (error) {
+        console.error('Lỗi khi lưu file lịch sử:', error);
+    }
+}
+
 const option = {
             timeZone: 'Asia/Ho_Chi_Minh',
             year: 'numeric',
@@ -14,7 +34,7 @@ const option = {
             hour12: false //sử dụng định dạng 24 giờ
         }
 
-const requestHandler = (request, response) => {
+const requestHandler = async (request, response) => {
     const parsedUrl = url.parse(request.url, true);
     const pathname = parsedUrl.pathname;
     const method = request.method;
@@ -46,6 +66,7 @@ const requestHandler = (request, response) => {
             }
             apiCallHistory.push(historyEntry);
             console.log('Đã ghi lịch sử cho /sum. Số mục lịch sử:', apiCallHistory.length);
+            await saveHistory();
 
             response.writeHead(200);
             response.end(JSON.stringify({
@@ -67,6 +88,7 @@ const requestHandler = (request, response) => {
         };
         apiCallHistory.push(historyEntry);
         console.log('Đã ghi lịch sử cho /current-time-vietnam. Số mục lịch sử:', apiCallHistory.length);
+        await saveHistory();
 
         response.writeHead(200);
         response.end(JSON.stringify({
@@ -90,6 +112,33 @@ const requestHandler = (request, response) => {
 const server = http.createServer(requestHandler);
 const PORT = 3000;
 
-server.listen(PORT, () => {
-    console.log(`Server đang chạy tại http://localhost:${PORT}`);
-})
+const startServer = async () => {
+    try {
+        const data = await fs.readFile(historyFilePath, 'utf8');
+        const historyFromFile = JSON.parse(data);
+        
+        if(Array.isArray(historyFromFile)) {
+            apiCallHistory = historyFromFile;
+            console.log(`Đã nạp thành công ${apiCallHistory.length} mục từ lịch sử.`);
+        } else {
+             console.log('File lịch sử có định dạng không hợp lệ, bắt đầu với lịch sử rỗng.');
+             apiCallHistory = [];
+        }
+
+    } catch (error) {
+        if (error.code === 'ENOENT') {
+            console.log('File api_history.json không tìm thấy. Bắt đầu với lịch sử rỗng.');
+            apiCallHistory = [];
+        } else {
+            console.error('Lỗi nghiêm trọng khi đọc file lịch sử:', error);
+            process.exit(1);
+        }
+    }
+
+    server.listen(PORT, () => {
+        console.log(`Server đang chạy tại http://localhost:${PORT}`);
+        console.log('  Endpoints: /sum, /current-time-vietnam, /history');
+    });
+};
+
+startServer();
