@@ -25,7 +25,7 @@ const requestHandler = async (requestFromClient, responseToClient) => {
         if (isNaN(num1) || isNaN(num2)) {
             responseToClient.writeHead(400);
             responseToClient.end(JSON.stringify({
-                error: "Dữ liệu đầu vào không hợp lệ. 'num1' và 'num2' phải là các số hợp lệ."
+                error: "Invalid input data. 'num1' and 'num2' must be valid numbers."
             }));
         } else {
             const sumResult = num1 + num2;
@@ -34,9 +34,9 @@ const requestHandler = async (requestFromClient, responseToClient) => {
             try {
                 // Lệnh ghi file vẫn ở đây
                 await fs.appendFile(historyFilePath, historyLine);
-                console.log('Đã ghi lịch sử phép tính vào file.');
+                console.log('Calculation history written to file.');
             } catch (error) {
-                console.error('Lỗi khi ghi file lịch sử:', error);
+                console.error('Error file history:', error);
             }
             responseToClient.writeHead(200);
             responseToClient.end(JSON.stringify({
@@ -48,7 +48,7 @@ const requestHandler = async (requestFromClient, responseToClient) => {
     } else {
         responseToClient.writeHead(404);
         responseToClient.end(JSON.stringify({
-            error: "Endpoint không tìm thấy. Hãy thử /sum?num1=X&num2=Y"
+            error: "Endpoint not found. Let try /sum?num1=X&num2=Y"
         }));
     }
 };
@@ -57,6 +57,6 @@ const server = http.createServer(requestHandler);
 const PORT = 3000;
 
 server.listen(PORT, () => {
-    console.log(`Server đang chạy tại http://localhost:${PORT}`);
-    console.log('  API tính tổng: /sum?num1=X&num2=Y');
+    console.log(`Server is running at http://localhost:${PORT}`);
+    console.log('API sum: /sum?num1=X&num2=Y');
 });

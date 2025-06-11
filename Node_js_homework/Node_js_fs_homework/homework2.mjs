@@ -28,26 +28,26 @@ const requestHandler = async (requestFromClient, responseToClient) => {
 
         const num1 = parseFloat(num1str);
         const num2 = parseFloat(num2str);
-        console.log(`Sau khi parseFloat: num1 = ${num1} (kiểu: ${typeof num1}), num2 = ${num2} (kiểu: ${typeof num2})`);
+        console.log(`ParseFloat: num1 = ${num1} (kiểu: ${typeof num1}), num2 = ${num2} (kiểu: ${typeof num2})`);
 
         
         if (isNaN(num1) || isNaN(num2)) {
             responseToClient.writeHead(400);
             responseToClient.end(JSON.stringify({
-                error: "Dữ liệu đầu vào không hợp lệ. 'num1' và 'num2' phải là các số hợp lệ."
+                error: "Invalid input data. 'num1' and 'num2' must be valid numbers."
             }));
         } else {
-            console.log(`API /sum được gọi thành công`);
+            console.log(`API /sum Access`);
             const sumResult = num1 + num2;
             const historyLine = `Timestamp: ${new Date().toISOString()}, Calculation: ${num1} + ${num2} = ${sumResult}\n`;
         
             try {
                 await fs.appendFile(historyFilePath, historyLine);
-                console.log('Đã ghi lịch sử phép tính vào file.');
+                console.log('Calculation history written to file.');
                 await fs.writeFile(countFilePath, sumAPICallCount.toString());
-                console.log('Đã cập nhật file đếm.');
+                console.log('updated count file.');
             } catch (error) {
-                console.error('Lỗi khi ghi file lịch sử:', error);
+                console.error('Error file history:', error);
             }
             sumAPICallCount++;
             responseToClient.writeHead(200); 
@@ -68,7 +68,7 @@ const requestHandler = async (requestFromClient, responseToClient) => {
     } else {
         responseToClient.writeHead(404);
         responseToClient.end(JSON.stringify({
-            error: "Endpoint không tìm thấy. Hãy thử /sum?num1=X&num2=Y"
+            error: "Endpoint not found. Let try /sum?num1=X&num2=Y"
         }));
     }
 };
@@ -79,23 +79,23 @@ const PORT = 3000;
 const startServer = async () => {
     try {
         const data = await fs.readFile(countFilePath, 'utf8');
-        sumAPICallCount = parseInt(data, 10) || 0; // Thêm || 0 để phòng trường hợp file rỗng
-        console.log(`Đã nạp số lần gọi từ file: ${sumAPICallCount}`);
+        sumAPICallCount = parseInt(data, 10) || 0; 
+        console.log(`Had input data to file count: ${sumAPICallCount}`);
     } catch (error) {
         if (error.code === 'ENOENT') {
-            console.log('File đếm không tìm thấy. Bắt đầu đếm từ 0.');
+            console.log('File call-count not found. Let start at count 0.');
             sumAPICallCount = 0;
         } else {
-            console.error('Lỗi khi đọc file đếm:', error);
+            console.error('Error file call-count:', error);
             process.exit(1);
         }
     }
 
     server.listen(PORT, () => {
-        console.log(`Server đang chạy tại http://localhost:${PORT}`);
-        console.log('  API tính tổng: /sum?num1=X&num2=Y');
-        console.log('  API đếm số lần gọi thành công: /sum/call-count (GET)');
+        console.log(`Server is running at http://localhost:${PORT}`);
+        console.log('  API sum: /sum?num1=X&num2=Y');
+        console.log('  API call-count access: /sum/call-count (GET)');
     });
 };
 
-startServer();// "bắt đầu ngày làm việc mới"
+startServer();

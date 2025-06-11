@@ -15,7 +15,6 @@ let apiCallHistory = [];
 
 async function saveHistory() {
     try {
-        // Ghi toàn bộ mảng apiCallHistory vào file, format JSON cho đẹp
         await fs.writeFile(historyFilePath, JSON.stringify(apiCallHistory, null, 2));
         console.log('Lịch sử API đã được lưu vào file.');
     } catch (error) {
@@ -65,7 +64,7 @@ const requestHandler = async (request, response) => {
                 timestamp: new Date().toISOString()
             }
             apiCallHistory.push(historyEntry);
-            console.log('Đã ghi lịch sử cho /sum. Số mục lịch sử:', apiCallHistory.length);
+            console.log('History logged for /sum. Number of history entries:', apiCallHistory.length);
             await saveHistory();
 
             response.writeHead(200);
@@ -87,7 +86,7 @@ const requestHandler = async (request, response) => {
             timestamp: new Date().toISOString()
         };
         apiCallHistory.push(historyEntry);
-        console.log('Đã ghi lịch sử cho /current-time-vietnam. Số mục lịch sử:', apiCallHistory.length);
+        console.log('History has been logged for /current-time-vietnam. Number of history entries:', apiCallHistory.length);
         await saveHistory();
 
         response.writeHead(200);
@@ -119,25 +118,25 @@ const startServer = async () => {
         
         if(Array.isArray(historyFromFile)) {
             apiCallHistory = historyFromFile;
-            console.log(`Đã nạp thành công ${apiCallHistory.length} mục từ lịch sử.`);
+            console.log(`Input accept ${apiCallHistory.length} history.`);
         } else {
-             console.log('File lịch sử có định dạng không hợp lệ, bắt đầu với lịch sử rỗng.');
+             console.log('The history file has an invalid format, starting with an empty history.');
              apiCallHistory = [];
         }
 
     } catch (error) {
         if (error.code === 'ENOENT') {
-            console.log('File api_history.json không tìm thấy. Bắt đầu với lịch sử rỗng.');
+            console.log('FThe history file has an invalid format, starting with an empty history.');
             apiCallHistory = [];
         } else {
-            console.error('Lỗi nghiêm trọng khi đọc file lịch sử:', error);
+            console.error('Error reading history file:', error);
             process.exit(1);
         }
     }
 
     server.listen(PORT, () => {
-        console.log(`Server đang chạy tại http://localhost:${PORT}`);
-        console.log('  Endpoints: /sum, /current-time-vietnam, /history');
+        console.log(`Server is running at http://localhost:${PORT}`);
+        console.log('Endpoints: /sum, /current-time-vietnam, /history');
     });
 };
 

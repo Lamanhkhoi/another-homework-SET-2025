@@ -14,7 +14,7 @@ const requestHandler = async (request, response) => {
     const pathname = parsedUrl.pathname;
     const method = request.method;
 
-    console.log(`Nhận yêu cầu: ${method} ${pathname}`);
+    console.log(`Access a request: ${method} ${pathname}`);
     
     response.setHeader('Content-Type', 'application/json; charset=utf-8');
 
@@ -39,9 +39,9 @@ const requestHandler = async (request, response) => {
         
         try {
             await fs.appendFile(timeLogFilePath, logEntry);
-            console.log('Đã ghi log cho API thời gian.');
+            console.log('Added log to file current-time.');
         } catch (error) {
-            console.error('Lỗi khi ghi file log thời gian:', error);
+            console.error('Error file current-time:', error);
         }
 
         response.writeHead(200);
@@ -52,7 +52,7 @@ const requestHandler = async (request, response) => {
     } else {
         response.writeHead(404);
         response.end(JSON.stringify({
-            error: "Endpoint không tìm thấy."
+            error: "Endpoint not found."
         }));
     }
 };
