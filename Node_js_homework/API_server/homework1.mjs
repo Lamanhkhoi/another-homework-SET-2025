@@ -13,12 +13,10 @@ import http from 'http';
 import url from 'url';
 
 const requestHandler = (requestFromClient, responseToClient) => {
-    // Phân tích URL từ đối tượng 'requestFromClient'
-    const parsedUrl = url.parse(requestFromClient.url, true); // Sử dụng requestFromClient.url, chứa toàn bộ thông tin URL đã được "bóc tách" thành các phần nhỏ.
-    const pathname = parsedUrl.pathname;//giúp chúng ta xác định xem người dùng muốn truy cập "endpoint" nào của API.(vd: /sum, /history)
-    const queryParams = parsedUrl.query;//giúp chúng ta dễ dàng lấy ra các giá trị đầu vào mà người dùng gửi lên qua URL để API xử lý
+    const parsedUrl = url.parse(requestFromClient.url, true); 
+    const pathname = parsedUrl.pathname;
+    const queryParams = parsedUrl.query;
 
-    // Sử dụng 'responseToClient' để thiết lập header
     responseToClient.setHeader('Content-Type', 'application/json; charset=utf-8');
 
     if (pathname === '/sum') {
@@ -30,13 +28,12 @@ const requestHandler = (requestFromClient, responseToClient) => {
 
         const num1 = parseFloat(num1str);
         const num2 = parseFloat(num2str);
-        console.log(`Sau khi parseFloat: num1 = ${num1} (kiểu: ${typeof num1}), num2 = ${num2} (kiểu: ${typeof num2})`);
+        console.log(`ParseFloat: num1 = ${num1} (kiểu: ${typeof num1}), num2 = ${num2} (kiểu: ${typeof num2})`);
 
         if (isNaN(num1) || isNaN(num2)) {
-            // Input không hợp lệ
-            responseToClient.writeHead(400); // 400 Bad Request
+            responseToClient.writeHead(400); 
             responseToClient.end(JSON.stringify({
-                error: "Dữ liệu đầu vào không hợp lệ. 'num1' và 'num2' phải là các số hợp lệ."
+                error: "Invalid input data. 'num1' and 'num2' must be valid numbers."
             }));
         } else {
             const sumResult = num1 + num2;
@@ -50,7 +47,7 @@ const requestHandler = (requestFromClient, responseToClient) => {
     } else {
         responseToClient.writeHead(404);
         responseToClient.end(JSON.stringify({
-            error: "Endpoint không tìm thấy. Hãy thử /sum?num1=X&num2=Y"
+            error: "Endpoint not found. Let try /sum?num1=X&num2=Y"
         }));
     }
 };
@@ -59,6 +56,6 @@ const server = http.createServer(requestHandler);
 const PORT = 3000;
 
 server.listen(PORT, () => {
-    console.log(`Server đang chạy tại http://localhost:${PORT}`);
-    console.log('  API tính tổng: /sum?num1=X&num2=Y');
+    console.log(`Server is running at http://localhost:${PORT}`);
+    console.log('API sum: /sum?num1=X&num2=Y');
 });

@@ -23,8 +23,7 @@ const requestHandler = (request, response) => {
             hour12: false //sử dụng định dạng 24 giờ
         }
         
-        const dateTimeParts = now.toLocaleString('sv-SE', option); /*now.toLocaleString(locales, options): Phương thức này của đối tượng Date trả về một chuỗi biểu diễn ngày giờ 
-        dựa trên locales (khu vực địa lý, ngôn ngữ) và options (các tùy chọn định dạng) bạn cung cấp.*/
+        const dateTimeParts = now.toLocaleString('sv-SE', option); 
 
         const formattedVietnamTime = dateTimeParts.replace(' ', '/') + "+07:00";
 
@@ -36,8 +35,8 @@ const requestHandler = (request, response) => {
     } else {
         response.writeHead(404);
         response.end(JSON.stringify({
-            error: "Endpoint không tìm thấy."
-        }));
+            error: "Endpoint not found."
+        }))
     }
 };
 

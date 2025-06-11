@@ -45,7 +45,7 @@ const requestHandler = (request, response) => {
                 timestamp: new Date().toISOString()
             }
             apiCallHistory.push(historyEntry);
-            console.log('Đã ghi lịch sử cho /sum. Số mục lịch sử:', apiCallHistory.length);
+            console.log('History logged for /sum. Number of history entries:', apiCallHistory.length);
 
             response.writeHead(200);
             response.end(JSON.stringify({
@@ -66,7 +66,7 @@ const requestHandler = (request, response) => {
             timestamp: new Date().toISOString()
         };
         apiCallHistory.push(historyEntry);
-        console.log('Đã ghi lịch sử cho /current-time-vietnam. Số mục lịch sử:', apiCallHistory.length);
+        console.log('History has been logged for /current-time-vietnam. Number of history entries:', apiCallHistory.length);
 
         response.writeHead(200);
         response.end(JSON.stringify({
@@ -91,5 +91,5 @@ const server = http.createServer(requestHandler);
 const PORT = 3000;
 
 server.listen(PORT, () => {
-    console.log(`Server đang chạy tại http://localhost:${PORT}`);
+    console.log(`Server is running at http://localhost:${PORT}`);
 })
