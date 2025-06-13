@@ -11,6 +11,8 @@ function handleSumRequest(request, response, queryParams){
         const sum = num1 + num2;
         response.writeHead(200);
         response.end(JSON.stringify({
+            num1: num1,
+            num2: num2,
             sum : sum
         }));
     }
