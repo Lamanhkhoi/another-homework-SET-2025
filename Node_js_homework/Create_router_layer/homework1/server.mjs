@@ -1,6 +1,6 @@
 import http from 'http';
 import { URL } from 'url';
-import sumRouter from './routers/sum.router.mjs'
+import sumRouter from './routers/sum_router.mjs'
 
 function handleMainNotFound(request, response) {
     response.writeHead(404);
@@ -17,8 +17,7 @@ const requestHandler = (request, response) => {
 
     if (pathname.startsWith('/sum')) {
         sumRouter(request, response);
-    }
-    else {
+    } else {
         handleMainNotFound(request, response);
     }
 };

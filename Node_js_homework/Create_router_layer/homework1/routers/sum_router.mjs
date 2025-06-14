@@ -1,4 +1,4 @@
-import handleSumRequest from './controller/sum_controller.mjs';
+import handleSumRequest from '../controllers/sum_controller.mjs';
 import { URL } from 'url';
 function handleSumRouteNotFound(request, response) {
     response.writeHead(404);
