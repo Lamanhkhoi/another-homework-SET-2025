@@ -1,25 +1,13 @@
 import http from 'http';
 import { URL } from 'url';
-import sumRouter from './routers/sum_router.mjs'
-
-function handleMainNotFound(request, response) {
-    response.writeHead(404);
-    response.end(JSON.stringify({ error: "Endpoint not found." }));
-}
+import mainRouter from './routers/index.mjs';
 
 const requestHandler = (request, response) => {
     response.setHeader('Content-Type', 'application/json; charset=utf-8');
 
     const url = new URL(request.url, `http://${request.headers.host}`);
-    const { pathname } = url;
 
-    console.log(`Router accept request: ${pathname}`);
-
-    if (pathname.startsWith('/sum')) {
-        sumRouter(request, response);
-    } else {
-        handleMainNotFound(request, response);
-    }
+    mainRouter(request, response);
 };
 
 const server = http.createServer(requestHandler);
