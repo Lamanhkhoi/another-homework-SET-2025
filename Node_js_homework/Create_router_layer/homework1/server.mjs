@@ -5,7 +5,7 @@ import mainRouter from './routers/index.mjs';
 const requestHandler = (request, response) => {
     response.setHeader('Content-Type', 'application/json; charset=utf-8');
 
-    const url = new URL(request.url, `http://${request.headers.host}`);
+    request.url = new URL(request.url, `http://${request.headers.host}`);
 
     mainRouter(request, response);
 };

@@ -1,17 +1,16 @@
 import sumRouter from "./sum/index.mjs";
 
-const mainRouter = {
+const mainRoutes = {
     '/sum': sumRouter,
 }
 
-function mainRouter( request, response){
+function mainRouter(request, response){
     const { pathname } = request.url;
 
     const baseRoute = Object.keys(mainRoutes).find(route => pathname.startsWith(route));
 
     if (baseRoute){
-        const router = mainRouter[baseRoute];
-        
+        const router = mainRoutes[baseRoute];
         const remainingPath = pathname.substring(baseRoute.length) || '/';
         request.url.pathname = remainingPath;
         router(request, response);
