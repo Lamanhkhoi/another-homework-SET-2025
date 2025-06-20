@@ -11,8 +11,7 @@ function mainRouter(request, response){
 
     if (baseRoute){
         const router = mainRoutes[baseRoute];
-        const remainingPath = pathname.substring(baseRoute.length) || '/';
-        request.url.pathname = remainingPath;
+        request.url.pathname = router;
         router(request, response);
     } else {
         response.writeHead(404);
