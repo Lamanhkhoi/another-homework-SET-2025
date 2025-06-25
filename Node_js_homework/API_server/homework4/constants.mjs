@@ -8,6 +8,7 @@ export const ROUTES = {
     TIME: '/current-time-vietnam',
     SUM: '/sum',
     CALL_COUNT: '/sum/call-count',
+    HISTORY: '/history',
 };
 
 export const HEADERS = {
@@ -29,4 +30,9 @@ export const VIETNAM_TIME_OPTIONS = {
     minute: '2-digit',
     second: '2-digit',
     hour12: false 
+};
+
+export const HTTP_METHODS = {
+    GET: 'GET',
+    POST: 'POST',
 };
