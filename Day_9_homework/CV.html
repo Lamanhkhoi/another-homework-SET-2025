@@ -3,69 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CV - Lam Anh Khoi</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="personalCv" id="personalCvSection">
-        <div class="personalCv__avatar">
-            <img src="./images/avatar.png"></img>
-        </div>
-        <div class="personalCv__contactSection">
-            <div class="personalCv__contactTitle"><b>Contact</b></div>
-            <div class="personalCv__contactDetails" id="contactDetails">
-                <div class="personalCv__contactDetailItem">phone numbers</div>
-                <div class="personalCv__contactDetailItem">email</div>
-                <div class="personalCv__contactDetailItem">birthday</div>
-                <div class="personalCv__contactDetailItem">address</div>
+    <div class="cvContainer">
+        
+        <aside class="cvContainer__sidebar">
+            <div class="profileCard">
+                <img class="profileCard__avatar" src="./images/avatar.png" alt="Avatar">
             </div>
-        </div>
-        <div class="personalCv__educationSection">
-            <div class="personalCv__educationProfile" id="educationProfile">
-                <div class="personalCv__educationProfileTitle"><b>Education</b></div>
-                <div class="personalCv__educationProfileContent" id="educationProfileContent">
-                    <span>* Excellent student for 11 years</span>
-                    <span>* currently a student at FPT University</span>
+
+            <div class="infoBox">
+                <h3 class="infoBox__title">Contact</h3>
+                <ul class="infoBox__list">
+                    <li class="infoBox__item">Phone numbers</li>
+                    <li class="infoBox__item">Email</li>
+                    <li class="infoBox__item">Birthday</li>
+                    <li class="infoBox__item">Address</li>
+                </ul>
+            </div>
+
+            <div class="infoBox">
+                <h3 class="infoBox__title">Education</h3>
+                <div class="infoBox__content">
+                    <p class="infoBox__text">* Excellent student for 11 years</p>
+                    <p class="infoBox__text">* Currently a student at FPT University</p>
                 </div>
             </div>
-        </div>
-        <div class="personalCv__skillsSection">
-            <div class="personalCv__skillItem personalCv__skillItem--it">
-                <div class="personalCv__skillItemTitle"><b>IT</b></div>
-                <div class="personalCv__skillItemContent" id="itSkillContent">
+
+            <div class="skillList">
+                <div class="skillList__item skillList__item--it">
+                    <h3 class="skillList__title">IT</h3>
+                    <div class="skillList__content">Content</div>
+                </div>
+                <div class="skillList__item skillList__item--english">
+                    <h3 class="skillList__title">English</h3>
+                    <div class="skillList__content">Content</div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="cvContainer__main">
+            <header class="mainHeader">
+                <h1 class="mainHeader__name">Lâm Anh Khôi</h1>
+                <p class="mainHeader__jobTitle">University Student</p>
+            </header>
+
+            <section class="contentSection">
+                <h2 class="contentSection__title">Career goals</h2>
+                <div class="contentSection__body">
                     Content
                 </div>
-            </div>
-            <div class="personalCv__skillItem personalCv__skillItem--english">
-                <div class="personalCv__skillItemTitle"><b>English</b></div>
-                <div class="personalCv__skillItemContent" id="englishSkillContent">Content</div>
-            </div>
-        </div>
-    </div>
-    <div class="mainContentCv" id="mainContentCvSection">
-        <div class="mainContentCv__nameAndJobs">
-            <div class="mainContentCv__nameAndJobsFullName"><b>Lâm Anh Khôi</b></div>
-            <div class="mainContentCv__nameAndJobsStatus">University students</div>
-        </div>
-        <div class="mainContentCv__careerGoals">
-            <div class="mainContentCv__careerGoalsTitle"><b>Career goals</b></div>
-            <div class="mainContentCv__careerGoalsContent" id="careerGoalsContent">
-                content
-            </div>
-        </div>
-        <div class="mainContentCv__experience">
-            <div class="mainContentCv__experienceTitle"><b>Experience</b></div>
-            <div class="mainContentCv__experienceContent" id="experienceContent">
-                content
-            </div>
-        </div>
-        <div class="mainContentCv__otherSkills">
-            <div class="mainContentCv__otherSkillsTitle"><b>Other skill</b></div>
-            <div class="mainContentCv__otherSkillsContent" id="otherSkillsContent">
-                Content
-            </div>
-        </div>
-    </div>
+            </section>
 
+            <section class="contentSection">
+                <h2 class="contentSection__title">Experience</h2>
+                <div class="contentSection__body">
+                    Content
+                </div>
+            </section>
+            
+            <section class="contentSection">
+                <h2 class="contentSection__title">Other skill</h2>
+                <div class="contentSection__body">
+                    Content
+                </div>
+            </section>
+        </main>
+
+    </div>
 </body>
 </html>

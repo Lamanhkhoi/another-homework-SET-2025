@@ -1,175 +1,105 @@
 body { 
+    font-family: sans-serif;
+}
+
+.cvContainer {
     display: flex;
+    max-width: 1200px;
+    margin: 20px auto;
     border: 3px solid black;
     border-radius: 10px;
-}
-
-.personalCv__contactSection {
-    display: inline-block;
-    flex-direction: column;
-    width: 300px;
-    margin: 0px;
-    border: 0px solid black;
-    border-radius: 0px;
-    background-color: rgb(16, 93, 182);
-}
-
-#personalCvSection {
-    border: 2px solid black;
-    margin: 10px;
-    margin-top: 10px;
-    margin-left: 30px;
-    width: 150px;
-    height: 150px;
-    border-radius: 70%;
-    justify-content: center;
     overflow: hidden;
 }
 
-#personalCvSection img {
+.cvContainer__sidebar {
+    width: 300px;
+    background-color: rgb(16, 93, 182);
+    color: white;
+    padding: 20px;
+    flex-shrink: 0;
+}
+
+.cvContainer__main {
+    flex-grow: 1;
+    padding: 40px;
+}
+
+.profileCard {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 20px;
+    border: 3px solid white;
+}
+.profileCard__avatar {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.personalCv__contactDetails {
-    display: block;
-    border-bottom: 3px solid rgb(255, 255, 255);
-    margin: 10px;
-    color: black;
-    font-size: 25px;
+.infoBox {
+    margin-bottom: 30px;
+}
+.infoBox__title {
+    font-size: 24px;
+    border-bottom: 2px solid white;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+}
+.infoBox__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.infoBox__item {
+    margin-bottom: 8px;
+}
+.infoBox__content {
+    font-size: 14px;
+    line-height: 1.5;
+}
+.infoBox__text {
+    margin: 0 0 5px 0;
 }
 
-.personalCv__educationProfile {
-    display: block;
-    margin: 10px;
-    color: black;
+.skillList__item {
+    margin-bottom: 20px;
+}
+.skillList__title {
+    font-size: 24px;
+    border-bottom: 2px solid white;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+}
+.skillList__content {
+    font-size: 14px;
 }
 
-.personal__education {
-    display: block;
-    color: white;
+.mainHeader {
+    margin-bottom: 40px;
 }
-
-#educationProfileContent {
-    display: flex;
-    margin: 10px;
-    max-width: 200px;
-    overflow-wrap:break-word;
-    flex-direction: column;
-}
-
-.personalCv__skillItemTitle {
-    display: block;
-    border-bottom: 3px solid rgb(255, 255, 255);
-    margin: 10px;
-    color: white;
-    font-size: 25px;
-}
-
-#itSkillContent {
-    display: flex;
-    margin: 10px;
-    max-width: 200px;
-    overflow-wrap:break-word;
-    flex-direction: column;
-    color: white;
-}
-
-#englishSkillContent {
-    display: flex;
-    margin: 10px;
-    max-width: 200px;
-    overflow-wrap:break-word;
-    flex-direction: column;
-    color: white;
-}
-
-.mainContentCv {
-    display: inline-block;
-    flex-direction: column;
-    width: 100%;
-    margin: 0px;
-    border: 0px solid black;
-    border-radius: 0px;
-}
-
-.mainContentCv__nameAndJobs {
-    display: block;
-    border: 0px solid black;
-    padding-top: 45px;
-    padding-left: 10px;
-}
-
-.mainContentCv__nameAndJobsFullName {
-    display: block;
-    border: 0px solid black;
+.mainHeader__name {
     font-size: 50px;
+    margin: 0;
+    color: rgb(16, 93, 182);
 }
-
-.mainContentCv__nameAndJobsStatus {
-    display: block;
-    border: 0px solid black;
+.mainHeader__jobTitle {
     font-size: 35px;
+    margin: 5px 0 0 0;
+    color: #333;
 }
 
-.mainContentCv__careerGoals {
-    display: block;
-    border: 0px solid black;
-    padding-left: 0px;
-    margin-top: 30px;
+.contentSection {
+    margin-bottom: 40px;
 }
-
-.mainContentCv__careerGoalsTitle {
-    display: block;
-    border-bottom: 3px solid black;
-    margin: 10px;
+.contentSection__title {
     font-size: 25px;
-}
-
-#careerGoalsContent {
-    display: block;
-    padding: 10px;
-    font-size: 18px;
-}
-
-.mainContentCv__experience {
-    display: block;
-    border: 0px solid black;
-    padding-left: 0px;
-}
-
-.mainContentCv__experienceTitle {
-    display: block;
     border-bottom: 3px solid black;
-    margin: 10px;
-    font-size: 25px;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
 }
-
-#experienceContent {
-    display: block;
-    padding: 10px;
+.contentSection__body {
     font-size: 18px;
-}
-
-.mainContentCv__otherSkills {
-    display: block;
-    border: 0px solid black;
-    padding: 0px;
-    
-}
-
-.mainContentCv__otherSkillsTitle {
-    display: block;
-    border-bottom: 3px solid black;
-    margin: 10px;
-    font-size: 25px;
-    background-color: rgb(255, 255, 255);
-}
-
-#otherSkillsContent {
-    display: block;
-    padding: 10px;
-    font-size: 18px;
-    background-color: rgb(255, 255, 255);
+    line-height: 1.6;
 }
