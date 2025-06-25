@@ -1,41 +1,32 @@
 import http from 'http';
 import url from 'url';
+import { HTTP_STATUS, ROUTES, HEADERS, MESSAGES, VIETNAM_TIME_OPTIONS } from './constants.mjs';
 
 const requestHandler = (request, response) => {
     const parsedUrl = url.parse(request.url, true);
     const pathname = parsedUrl.pathname;
     const method = request.method;
 
-    console.log(`Nhận yêu cầu: ${method} ${pathname}`);
+    console.log(`Request received: ${method} ${pathname}`);
     
-    response.setHeader('Content-Type', 'application/json; charset=utf-8');
+    response.setHeader(HEADERS.CONTENT_TYPE, HEADERS.APP_JSON_UTF8);
 
-    if (pathname === '/current-time-vietnam' && method === 'GET'){
+    if (pathname === ROUTES.TIME && method === 'GET'){
         const now = new Date();
-        const option = {
-            timeZone: 'Asia/Ho_Chi_Minh',
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false //sử dụng định dạng 24 giờ
-        }
         
-        const dateTimeParts = now.toLocaleString('sv-SE', option); 
+        const dateTimeParts = now.toLocaleString('sv-SE', VIETNAM_TIME_OPTIONS); 
 
         const formattedVietnamTime = dateTimeParts.replace(' ', '/') + "+07:00";
 
-        response.writeHead(200);
+        response.writeHead(HTTP_STATUS.OK);
         response.end(JSON.stringify({
             currentTime: formattedVietnamTime
         }));
 
     } else {
-        response.writeHead(404);
+        response.writeHead(HTTP_STATUS.NOT_FOUND);
         response.end(JSON.stringify({
-            error: "Endpoint not found."
+            error: MESSAGES.ENDPOINT_NOT_FOUND
         }))
     }
 };

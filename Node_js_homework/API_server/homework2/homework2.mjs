@@ -1,5 +1,6 @@
 import http from 'http';
 import url from 'url';
+import { HTTP_STATUS, ROUTES, HEADERS, MESSAGES } from './constants.mjs';
 
 let sumAPICallCount = 0;
 
@@ -8,28 +9,29 @@ const requestHandler = (requestFromClient, responseToClient) => {
     const pathname = parsedUrl.pathname;
     const queryParams = parsedUrl.query;
 
-    responseToClient.setHeader('Content-Type', 'application/json; charset=utf-8');
+    responseToClient.setHeader(HEADERS.CONTENT_TYPE, HEADERS.APP_JSON_UTF8);
 
-    if (pathname === '/sum') {
+    if (pathname === ROUTES.SUM) {
         const num1str = queryParams.num1;
         const num2str = queryParams.num2;
 
-        console.log('Đã nhận được num1 (chuỗi):', num1str);
-        console.log('Đã nhận được num2 (chuỗi):', num2str);
+        console.log('Received num1 (String):', num1str);
+        console.log('Received num2 (String):', num2str);
 
         const num1 = parseFloat(num1str);
         const num2 = parseFloat(num2str);
-        console.log(`ParseFloat: num1 = ${num1} (kiểu: ${typeof num1}), num2 = ${num2} (kiểu: ${typeof num2})`);
+        console.log(`ParseFloat: num1 = ${num1} (type: ${typeof num1}),
+                                 num2 = ${num2} (type: ${typeof num2})`);
 
         if (isNaN(num1) || isNaN(num2)) {
-            responseToClient.writeHead(400); 
+            responseToClient.writeHead(HTTP_STATUS.BAD_REQUEST); 
             responseToClient.end(JSON.stringify({
-                error: "Invalid input data. 'num1' and 'num2' must be valid numbers."
+                error: MESSAGES.INVALID_INPUT
             }));
         } else {
             console.log(`API /sum is success. sum call-count: ${sumAPICallCount}`);
             const sumResult = num1 + num2;
-            responseToClient.writeHead(200); 
+            responseToClient.writeHead(HTTP_STATUS.OK); 
             responseToClient.end(JSON.stringify({
                 sum: sumResult,
                 num1_received: num1,
@@ -37,7 +39,7 @@ const requestHandler = (requestFromClient, responseToClient) => {
             }));
             sumAPICallCount++;
         }
-    } else if (pathname === '/sum/call-count'){
+    } else if (pathname === ROUTES.CALL_COUNT){
         if ( requestFromClient.method === 'GET'){
             responseToClient.writeHead(200);
             responseToClient.end(JSON.stringify({
@@ -45,9 +47,9 @@ const requestHandler = (requestFromClient, responseToClient) => {
             }));
         }
     } else {
-        responseToClient.writeHead(404);
+        responseToClient.writeHead(HTTP_STATUS.NOT_FOUND);
         responseToClient.end(JSON.stringify({
-            error: "Endpoint not found. Let try /sum?num1=X&num2=Y"
+            error: MESSAGES.ENDPOINT_NOT_FOUND
         }));
     }
 };
@@ -56,7 +58,7 @@ const server = http.createServer(requestHandler);
 const PORT = 3000; 
 
 server.listen(PORT, () => {
-    console.log(`Server đang chạy tại http://localhost:${PORT}`);
+    console.log(`Server is running at http://localhost:${PORT}`);
     console.log('API sum: /sum?num1=X&num2=Y');
     console.log('API count api /sum had succeed: /sum/call-count (GET)');
 });
