@@ -51,10 +51,10 @@ async function handleOrder() {
             console.log(`=> Driver ${driverData.status} is on the way!`);
             console.log("--- Order Completed Successfully! ---");
         } catch (error) {
-            console.error("--- (Async/Await) Order Failed ---");
+            console.error("--- Order Failed ---");
             console.error(`Error: ${error.message}`);
         } finally {
-            console.log("--- (Async/Await) End of Order Process --- \n");
+            console.log("--- End of Order Process --- \n");
         }
 }
 
