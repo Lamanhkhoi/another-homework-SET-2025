@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "nhan.nguyen@email.com",
+      "password": "password123",
+      "managerment": "true",
+      "todos": [
+        {
+          "id": 101,
+          "task": "Finish MVC homework",
+          "completed": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "email": "khang.tran@email.com",
+      "password": "securepassword",
+      "managerment": "false",
+      "todos": []
+    }
+  ]
+}
