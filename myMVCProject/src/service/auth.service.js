@@ -36,7 +36,23 @@ async function login(email, password) {
     };
 }
 
+async function resetPassword(reset, newPassword) {
+    const updatedUser = await userRepository.resetPassword(email, newPassword);
+    if (!updatedUser){
+        return {
+            success: false,
+            message: 'Email was not existed!',
+        };
+    }
+
+    return{
+        success: true,
+        message: 'Password had updated success!',
+    };
+}
+
 module.exports = {
     register,
     login,
+    resetPassword,
 };
