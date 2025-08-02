@@ -1,23 +1,24 @@
-import sumRouter from "./sum/index.mjs";
+// routers/index.mjs - ĐÃ SỬA LẠI ✨
+import sumRouter from './sum/index.mjs';
 
-const mainRoutes = {
-    '/sum': sumRouter,
-}
+const mainRoutes = [
+    { basePath: '/sum', router: sumRouter },
+];
 
-function mainRouter(request, response){
-    const { pathname } = request.url;
+function mainRouter(request, response) {
+    // request.url lúc này đã là một chuỗi đúng như mong đợi.
+    const originalUrl = request.url;
+    const { pathname } = new URL(originalUrl, `http://${request.headers.host}`);
 
-    const baseRoute = Object.keys(mainRoutes).find(route => pathname.startsWith(route));
+    const mainRoute = mainRoutes.find(route => pathname.startsWith(route.basePath));
 
-    if (baseRoute){
-        const router = mainRoutes[baseRoute];
-        request.url.pathname = router;
-        router(request, response);
+    if (mainRoute) {
+        // Cắt chuỗi để router con xử lý phần còn lại.
+        request.url = originalUrl.substring(mainRoute.basePath.length) || '/';
+        mainRoute.router(request, response);
     } else {
         response.writeHead(404);
-        response.end(JSON.stringify({
-            error: "Endpoint not found."
-        }));
+        response.end(JSON.stringify({ error: "Endpoint not found." }));
     }
 }
 

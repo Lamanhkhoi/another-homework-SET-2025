@@ -1,0 +1,14 @@
+# stress-test.yml
+
+config:
+  # Địa chỉ server của chúng ta
+  target: "http://localhost:3000"
+  phases:
+    # Giai đoạn 1: Gửi 20 người dùng ảo (virtual users) mỗi giây trong 60 giây
+    - duration: 60
+      arrivalRate: 20
+scenarios:
+  - flow:
+      # Mỗi người dùng ảo sẽ gửi 1 request đến endpoint /stress
+      - get:
+          url: "/stress"

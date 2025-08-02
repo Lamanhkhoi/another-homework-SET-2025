@@ -24,10 +24,8 @@ loginForm.addEventListener('submit', function(event) {
     messageDiv.textContent = `Đã lấy dữ liệu! Sẵn sàng gửi đi... Email: ${email}`;
     messageDiv.style.color = 'green';
     
-    // --- NƠI ĐỂ KẾT NỐI VỚI BACKEND SAU NÀY ---
-    // Ví dụ sử dụng fetch:
-    /*
-    fetch('/api/login', {
+
+    fetch('http://localhost:3000/api/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -53,5 +51,5 @@ loginForm.addEventListener('submit', function(event) {
         messageDiv.textContent = 'Có lỗi xảy ra, không thể kết nối tới server.';
         messageDiv.style.color = 'red';
     });
-    */
+
 });
