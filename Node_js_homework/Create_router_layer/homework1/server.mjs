@@ -1,5 +1,4 @@
 import http from 'http';
-import { URL } from 'url';
 import mainRouter from './routers/index.mjs';
 
 const requestHandler = (request, response) => {
